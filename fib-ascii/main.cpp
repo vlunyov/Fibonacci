@@ -95,14 +95,14 @@ std::ostream& operator<<(std::ostream& os, const AsciiNum& num)
 template<typename F, typename N = int>
 F fibonacci(N n, F first = 0, F second = 1)
 {
-	while(--n)
+	static_assert(std::is_signed<N>::value, "The template argument N will be signed");
+	for(;;)
 	{
-		F temp{first};
-		first = second;
-		temp += second;
-		second = temp;
+		if(--n <= 0) return first;
+		first += second;
+		if(--n <= 0) return second;
+		second += first;
 	}
-	return first;
 }
 
 namespace fibonacci_self_test {
